@@ -21,6 +21,7 @@ var (
 	}
 	processName string
 	command     string
+	showOnly    bool
 )
 
 func init() {
@@ -29,9 +30,11 @@ func init() {
 	rootCmd.Flags().IntP("pid", "p", 0, "PID of the process to monitor")
 	rootCmd.Flags().StringVarP(&processName, "name", "n", "", "Name of the process to monitor")
 	rootCmd.Flags().StringVarP(&command, "command", "c", "", "Command to run and monitor")
+	rootCmd.Flags().BoolVarP(&showOnly, "show-only", "s", false, "Show only the entry process (exclude children)")
 	viper.BindPFlag("pid", rootCmd.Flags().Lookup("pid"))
 	viper.BindPFlag("name", rootCmd.Flags().Lookup("name"))
 	viper.BindPFlag("command", rootCmd.Flags().Lookup("command"))
+	viper.BindPFlag("show-only", rootCmd.Flags().Lookup("show-only"))
 
 	viper.SetConfigName("config")
 	viper.AddConfigPath(".")
@@ -115,10 +118,10 @@ func runCommand(cmdStr string) int {
 
 func printProcessInfo(pid, space int) {
 	clearConsole()
-	printProcessInfoRecursive(pid, space)
+	printProcessInfoRecursive(pid, space, !showOnly)
 }
 
-func printProcessInfoRecursive(pid, space int) {
+func printProcessInfoRecursive(pid, space int, printChildren bool) {
 	filePath := fmt.Sprintf("/proc/%d/status", pid)
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -155,9 +158,11 @@ func printProcessInfoRecursive(pid, space int) {
 		}
 	}
 
-	children := getChildProcesses(pid)
-	for _, child := range children {
-		printProcessInfoRecursive(child, space+2)
+	if printChildren {
+		children := getChildProcesses(pid)
+		for _, child := range children {
+			printProcessInfoRecursive(child, space+2, true)
+		}
 	}
 }
 
