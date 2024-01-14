@@ -41,4 +41,3 @@ pidstop -p 12345 -s
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-```
