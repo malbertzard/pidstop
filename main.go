@@ -71,12 +71,17 @@ func runMonitor(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	if pid == 0 {
+	if processName != "" {
 		pid = getPIDFromName(processName)
 		if pid == 0 {
 			fmt.Printf("Process with name '%s' not found.\n", processName)
 			os.Exit(1)
 		}
+	}
+
+	if pid == 0 {
+		os.Exit(1)
+		fmt.Printf("Process with pid not found.\n")
 	}
 
 	for {
