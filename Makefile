@@ -18,7 +18,7 @@ build:
 # Build a release version with static linking
 release:
 	@mkdir -p $(OUT_DIR)
-	$(BUILD_CMD) -a -installsuffix cgo
+	CGO_ENABLED=0 $(BUILD_CMD)
 
 # Run the program
 run: build

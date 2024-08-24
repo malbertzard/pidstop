@@ -2,6 +2,13 @@
 
 `pidstop` is a simple command-line tool for monitoring the VMRSS and other information of a process and its children.
 
+## TODO
+
+-[ ] Make this a full TUI?
+-[ ] Attach to stdout of process feature
+-[ ] Output CSV of usage
+-[ ] Maybe extend to other measurments
+
 ## Features
 
 - Monitor VMRSS (Virtual Memory Resident Set Size) of a specified process and its children.
