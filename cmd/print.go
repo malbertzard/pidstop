@@ -52,6 +52,9 @@ func printProcessInfoRecursive(process *Process, space int, printChildren bool) 
 				mem, _ := strconv.ParseFloat(fields[1], 64)
 				mem /= 1024.0
 				fmt.Printf("%*sVmRSS: %.2f MB\n", space+2, "", mem)
+			case "Threads:":
+				ppid, _ := strconv.Atoi(fields[1])
+				fmt.Printf("%*sThreads: %d\n", space+2, "", ppid)
 			case "PPid:":
 				ppid, _ := strconv.Atoi(fields[1])
 				fmt.Printf("%*sParent PID: %d\n", space+2, "", ppid)
